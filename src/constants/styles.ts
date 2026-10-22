@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
 
   authContainer: {
     flex: 1,
-    backgroundColor: "#2563eb",
+    backgroundColor: "#2546eb",
     justifyContent: "center",
     padding: 20,
   },
@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
 
   link: {
     textAlign: "center",
-    color: "#2563eb",
+    color: "#25b3eb",
     fontWeight: "bold",
     marginTop: 10,
   },
@@ -90,10 +90,10 @@ export const styles = StyleSheet.create({
   // =========================
 
   button: {
-    backgroundColor: "#2563eb",
-    padding: 13,
-    borderRadius: 10,
-    marginTop: 15,
+    backgroundColor: "#2574eb",
+    padding: 15,
+    borderRadius: 100,
+    marginTop: 20,
   },
 
   buttonText: {
@@ -103,7 +103,7 @@ export const styles = StyleSheet.create({
   },
 
   logoutButton: {
-    backgroundColor: "#dc2626",
+    backgroundColor: "#dc4126",
     padding: 13,
     borderRadius: 10,
     marginTop: 25,
