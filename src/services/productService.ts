@@ -11,7 +11,7 @@ export const fetchProductsFromApi = async (): Promise<ProductItem[]> => {
   // Mensimulasikan jeda loading server/API selama 1 detik
   await delay(1000);
 
-  const isSuccess = true; // Ubah ke false jika ingin menguji kondisi error (reject)
+  const isSuccess = false; // Ubah ke false jika ingin menguji kondisi error (reject)
 
   return new Promise((resolve, reject) => {
     if (isSuccess) {
@@ -21,3 +21,4 @@ export const fetchProductsFromApi = async (): Promise<ProductItem[]> => {
     }
   });
 };
+//tes ppp
