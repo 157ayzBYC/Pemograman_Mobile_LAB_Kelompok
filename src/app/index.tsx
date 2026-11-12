@@ -183,7 +183,7 @@ export default function Index() {
 
           <Pressable
             style={styles.menuCard}
-            onPress={() => router.push('/print')}
+            onPress={() => ('/print')}
           >
             <Text style={styles.menuIcon}>🖨️</Text>
             <View>
@@ -291,7 +291,7 @@ export default function Index() {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.pageTitle}>📄 Fotocopy</Text>
+          <Text style={styles.pageTitle}> Fotocopy</Text>
 
           <View style={styles.serviceBox}>
             <Text style={styles.sectionTitle}>Pilih Jenis Kertas</Text>
@@ -325,6 +325,7 @@ export default function Index() {
     );
   }
 
+  
   if (screen === 'stock') {
     return (
       <ScrollView style={styles.container}>
