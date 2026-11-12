@@ -34,26 +34,23 @@ export default function Index() {
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Mengambil data produk secara asynchronous saat masuk ke menu stock
+  // Mengambil data produk menggunakan .then() dan .catch() (Poin Rubrik)
   useEffect(() => {
     if (screen === "stock") {
-      const loadProducts = async () => {
-        try {
-          setLoading(true);
-          setErrorMessage(null);
-          // Memanggil async function menggunakan await & Promise
-          const data = await fetchProductsFromApi();
+      setLoading(true);
+      setErrorMessage(null);
+
+      fetchProductsFromApi()
+        .then((data) => {
           setProductsList(data);
-        } catch (error) {
+          setLoading(false);
+        })
+        .catch((error) => {
           setErrorMessage(
             typeof error === "string" ? error : "Terjadi kesalahan sistem.",
           );
-        } finally {
           setLoading(false);
-        }
-      };
-
-      loadProducts();
+        });
     }
   }, [screen]);
 
