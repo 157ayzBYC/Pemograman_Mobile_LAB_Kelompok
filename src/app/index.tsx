@@ -1,38 +1,68 @@
-
-import { useState } from 'react';
-import { useRouter } from 'expo-router';
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Pressable,
   ScrollView,
   Text,
   TextInput,
   View,
-} from 'react-native';
+} from "react-native";
 
-import ProductCard from '../components/ProductCard';
-import { styles } from '../constants/styles';
-import { products } from '../data/products';
+import ProductCard from "../components/ProductCard";
+import { styles } from "../constants/styles";
+import { fetchProductsFromApi } from "../services/productService"; // <-- Service Async Modul 3
+import { ProductItem } from "../types/product"; // <-- Type/Interface
 
 type Screen =
-  | 'welcome'
-  | 'adminLogin'
-  | 'clientLogin'
-  | 'register'
-  | 'clientHome'
-  | 'adminHome'
-  | 'stock'
-  | 'photocopy';
+  | "welcome"
+  | "adminLogin"
+  | "clientLogin"
+  | "register"
+  | "clientHome"
+  | "adminHome"
+  | "stock"
+  | "photocopy";
 
 export default function Index() {
   const router = useRouter();
-  const [screen, setScreen] = useState<Screen>('welcome');
-  const [search, setSearch] = useState('');
+  const [screen, setScreen] = useState<Screen>("welcome");
+  const [search, setSearch] = useState("");
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(search.toLowerCase())
+  // State tambahan untuk mendukung Asynchronous Data Fetching (Modul 3)
+  const [productsList, setProductsList] = useState<ProductItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Mengambil data produk secara asynchronous saat masuk ke menu stock
+  useEffect(() => {
+    if (screen === "stock") {
+      const loadProducts = async () => {
+        try {
+          setLoading(true);
+          setErrorMessage(null);
+          // Memanggil async function menggunakan await & Promise
+          const data = await fetchProductsFromApi();
+          setProductsList(data);
+        } catch (error) {
+          setErrorMessage(
+            typeof error === "string" ? error : "Terjadi kesalahan sistem.",
+          );
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      loadProducts();
+    }
+  }, [screen]);
+
+  // Filter produk berdasarkan input pencarian
+  const filteredProducts = productsList.filter((product) =>
+    product.name.toLowerCase().includes(search.toLowerCase()),
   );
 
-  if (screen === 'welcome') {
+  if (screen === "welcome") {
     return (
       <View style={styles.authContainer}>
         <View style={styles.authBox}>
@@ -45,14 +75,14 @@ export default function Index() {
 
           <Pressable
             style={styles.button}
-            onPress={() => setScreen('adminLogin')}
+            onPress={() => setScreen("adminLogin")}
           >
             <Text style={styles.buttonText}>Admin</Text>
           </Pressable>
 
           <Pressable
             style={styles.button}
-            onPress={() => setScreen('clientLogin')}
+            onPress={() => setScreen("clientLogin")}
           >
             <Text style={styles.buttonText}>Client</Text>
           </Pressable>
@@ -61,7 +91,7 @@ export default function Index() {
     );
   }
 
-  if (screen === 'adminLogin') {
+  if (screen === "adminLogin") {
     return (
       <View style={styles.authContainer}>
         <View style={styles.authBox}>
@@ -79,12 +109,12 @@ export default function Index() {
 
           <Pressable
             style={styles.button}
-            onPress={() => setScreen('adminHome')}
+            onPress={() => setScreen("adminHome")}
           >
             <Text style={styles.buttonText}>Login Admin</Text>
           </Pressable>
 
-          <Pressable onPress={() => setScreen('welcome')}>
+          <Pressable onPress={() => setScreen("welcome")}>
             <Text style={styles.link}>← Kembali</Text>
           </Pressable>
         </View>
@@ -92,7 +122,7 @@ export default function Index() {
     );
   }
 
-  if (screen === 'clientLogin') {
+  if (screen === "clientLogin") {
     return (
       <View style={styles.authContainer}>
         <View style={styles.authBox}>
@@ -110,20 +140,18 @@ export default function Index() {
 
           <Pressable
             style={styles.button}
-            onPress={() => setScreen('clientHome')}
+            onPress={() => setScreen("clientHome")}
           >
             <Text style={styles.buttonText}>Login</Text>
           </Pressable>
 
-          <Text style={styles.registerText}>
-            Belum memiliki akun?
-          </Text>
+          <Text style={styles.registerText}>Belum memiliki akun?</Text>
 
-          <Pressable onPress={() => setScreen('register')}>
+          <Pressable onPress={() => setScreen("register")}>
             <Text style={styles.link}>Register Client</Text>
           </Pressable>
 
-          <Pressable onPress={() => setScreen('welcome')}>
+          <Pressable onPress={() => setScreen("welcome")}>
             <Text style={styles.link}>← Kembali</Text>
           </Pressable>
         </View>
@@ -131,7 +159,7 @@ export default function Index() {
     );
   }
 
-  if (screen === 'register') {
+  if (screen === "register") {
     return (
       <View style={styles.authContainer}>
         <ScrollView contentContainerStyle={styles.authScroll}>
@@ -153,12 +181,12 @@ export default function Index() {
 
             <Pressable
               style={styles.button}
-              onPress={() => setScreen('clientLogin')}
+              onPress={() => setScreen("clientLogin")}
             >
               <Text style={styles.buttonText}>Buat Akun</Text>
             </Pressable>
 
-            <Pressable onPress={() => setScreen('clientLogin')}>
+            <Pressable onPress={() => setScreen("clientLogin")}>
               <Text style={styles.link}>Sudah punya akun? Login</Text>
             </Pressable>
           </View>
@@ -167,23 +195,21 @@ export default function Index() {
     );
   }
 
-  if (screen === 'clientHome') {
+  if (screen === "clientHome") {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.content}>
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Fotocopy Online</Text>
             <Text style={styles.headerText}>Halo, Client! 👋</Text>
-            <Text style={styles.headerText}>
-              Mau melakukan apa hari ini?
-            </Text>
+            <Text style={styles.headerText}>Mau melakukan apa hari ini?</Text>
           </View>
 
           <Text style={styles.sectionTitle}>Layanan</Text>
 
           <Pressable
             style={styles.menuCard}
-            onPress={() => ('/print')}
+            onPress={() => router.push("/print")}
           >
             <Text style={styles.menuIcon}>🖨️</Text>
             <View>
@@ -196,7 +222,7 @@ export default function Index() {
 
           <Pressable
             style={styles.menuCard}
-            onPress={() => setScreen('photocopy')}
+            onPress={() => setScreen("photocopy")}
           >
             <Text style={styles.menuIcon}>📄</Text>
             <View>
@@ -207,10 +233,7 @@ export default function Index() {
             </View>
           </Pressable>
 
-          <Pressable
-            style={styles.menuCard}
-            onPress={() => setScreen('stock')}
-          >
+          <Pressable style={styles.menuCard} onPress={() => setScreen("stock")}>
             <Text style={styles.menuIcon}>📦</Text>
             <View>
               <Text style={styles.menuTitle}>Lihat Stock</Text>
@@ -230,7 +253,7 @@ export default function Index() {
 
           <Pressable
             style={styles.logoutButton}
-            onPress={() => setScreen('welcome')}
+            onPress={() => setScreen("welcome")}
           >
             <Text style={styles.buttonText}>Logout</Text>
           </Pressable>
@@ -239,15 +262,13 @@ export default function Index() {
     );
   }
 
-  if (screen === 'adminHome') {
+  if (screen === "adminHome") {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.content}>
           <View style={styles.adminHeader}>
             <Text style={styles.headerTitle}>Admin Dashboard</Text>
-            <Text style={styles.headerText}>
-              Selamat datang, Admin.
-            </Text>
+            <Text style={styles.headerText}>Selamat datang, Admin.</Text>
           </View>
 
           <Text style={styles.sectionTitle}>Menu Admin</Text>
@@ -278,7 +299,7 @@ export default function Index() {
 
           <Pressable
             style={styles.logoutButton}
-            onPress={() => setScreen('welcome')}
+            onPress={() => setScreen("welcome")}
           >
             <Text style={styles.buttonText}>Logout</Text>
           </Pressable>
@@ -287,11 +308,11 @@ export default function Index() {
     );
   }
 
-  if (screen === 'photocopy') {
+  if (screen === "photocopy") {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.pageTitle}> Fotocopy</Text>
+          <Text style={styles.pageTitle}>📄 Fotocopy</Text>
 
           <View style={styles.serviceBox}>
             <Text style={styles.sectionTitle}>Pilih Jenis Kertas</Text>
@@ -316,7 +337,7 @@ export default function Index() {
 
           <Pressable
             style={styles.backButton}
-            onPress={() => setScreen('clientHome')}
+            onPress={() => setScreen("clientHome")}
           >
             <Text style={styles.backText}>← Kembali ke Home</Text>
           </Pressable>
@@ -325,8 +346,7 @@ export default function Index() {
     );
   }
 
-  
-  if (screen === 'stock') {
+  if (screen === "stock") {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.content}>
@@ -341,17 +361,38 @@ export default function Index() {
 
           <Text style={styles.sectionTitle}>Daftar Barang</Text>
 
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {/* Indikator Loading saat proses async berjalan */}
+          {loading && (
+            <View style={{ paddingVertical: 20, alignItems: "center" }}>
+              <ActivityIndicator size="large" color="#0056b3" />
+              <Text style={{ marginTop: 8, color: "#666" }}>
+                Memuat data produk...
+              </Text>
+            </View>
+          )}
 
-          {filteredProducts.length === 0 && (
+          {/* Menampilkan Pesan Error jika Promise di-reject */}
+          {errorMessage && (
+            <Text
+              style={{ color: "red", textAlign: "center", marginVertical: 10 }}
+            >
+              {errorMessage}
+            </Text>
+          )}
+
+          {!loading &&
+            !errorMessage &&
+            filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+
+          {!loading && !errorMessage && filteredProducts.length === 0 && (
             <Text>Barang tidak ditemukan.</Text>
           )}
 
           <Pressable
             style={styles.backButton}
-            onPress={() => setScreen('clientHome')}
+            onPress={() => setScreen("clientHome")}
           >
             <Text style={styles.backText}>← Kembali ke Home</Text>
           </Pressable>
