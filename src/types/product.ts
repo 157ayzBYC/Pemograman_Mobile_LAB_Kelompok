@@ -1,4 +1,3 @@
-// types/product.ts
 
 export interface ProductItem {
   id: number;
@@ -8,8 +7,7 @@ export interface ProductItem {
   stock: number;
 }
 
-// TAMBAHKAN INI:
-// Interface untuk membungkus respons dari API
+
 export interface ApiResponse<T> {
   success: boolean;
   data: T;
