@@ -1,0 +1,128 @@
+[
+  {
+    resource:
+      "/D:/Folder Semester 5/Pemograman Mobile/modul3lab/Pemograman_Mobile_LAB_Kelompok/src/app/index.tsx",
+    owner: "typescript",
+    code: "2307",
+    severity: 8,
+    message:
+      "Cannot find module '../../components/ProductCard' or its corresponding type declarations.",
+    source: "ts",
+    startLineNumber: 13,
+    startColumn: 25,
+    endLineNumber: 13,
+    endColumn: 55,
+    modelVersionId: 3,
+    origin: "extHost1",
+  },
+  {
+    resource:
+      "/D:/Folder Semester 5/Pemograman Mobile/modul3lab/Pemograman_Mobile_LAB_Kelompok/src/app/index.tsx",
+    owner: "typescript",
+    code: "2307",
+    severity: 8,
+    message:
+      "Cannot find module '../../constants/styles' or its corresponding type declarations.",
+    source: "ts",
+    startLineNumber: 14,
+    startColumn: 24,
+    endLineNumber: 14,
+    endColumn: 48,
+    modelVersionId: 3,
+    origin: "extHost1",
+  },
+  {
+    resource:
+      "/D:/Folder Semester 5/Pemograman Mobile/modul3lab/Pemograman_Mobile_LAB_Kelompok/src/app/index.tsx",
+    owner: "typescript",
+    code: "2307",
+    severity: 8,
+    message:
+      "Cannot find module '../../context/AuthContext' or its corresponding type declarations.",
+    source: "ts",
+    startLineNumber: 15,
+    startColumn: 25,
+    endLineNumber: 15,
+    endColumn: 52,
+    modelVersionId: 3,
+    origin: "extHost1",
+  },
+  {
+    resource:
+      "/D:/Folder Semester 5/Pemograman Mobile/modul3lab/Pemograman_Mobile_LAB_Kelompok/src/app/index.tsx",
+    owner: "typescript",
+    code: "2307",
+    severity: 8,
+    message:
+      "Cannot find module '../../lib/supabase' or its corresponding type declarations.",
+    source: "ts",
+    startLineNumber: 16,
+    startColumn: 26,
+    endLineNumber: 16,
+    endColumn: 46,
+    modelVersionId: 3,
+    origin: "extHost1",
+  },
+  {
+    resource:
+      "/D:/Folder Semester 5/Pemograman Mobile/modul3lab/Pemograman_Mobile_LAB_Kelompok/src/app/index.tsx",
+    owner: "typescript",
+    code: "2307",
+    severity: 8,
+    message:
+      "Cannot find module '../../services/productService' or its corresponding type declarations.",
+    source: "ts",
+    startLineNumber: 17,
+    startColumn: 38,
+    endLineNumber: 17,
+    endColumn: 69,
+    modelVersionId: 3,
+    origin: "extHost1",
+  },
+  {
+    resource:
+      "/D:/Folder Semester 5/Pemograman Mobile/modul3lab/Pemograman_Mobile_LAB_Kelompok/src/app/index.tsx",
+    owner: "typescript",
+    code: "2307",
+    severity: 8,
+    message:
+      "Cannot find module '../../types/product' or its corresponding type declarations.",
+    source: "ts",
+    startLineNumber: 18,
+    startColumn: 29,
+    endLineNumber: 18,
+    endColumn: 50,
+    modelVersionId: 3,
+    origin: "extHost1",
+  },
+  {
+    resource:
+      "/D:/Folder Semester 5/Pemograman Mobile/modul3lab/Pemograman_Mobile_LAB_Kelompok/src/app/index.tsx",
+    owner: "typescript",
+    code: "7006",
+    severity: 8,
+    message: "Parameter 'data' implicitly has an 'any' type.",
+    source: "ts",
+    startLineNumber: 57,
+    startColumn: 16,
+    endLineNumber: 57,
+    endColumn: 20,
+    modelVersionId: 3,
+    origin: "extHost1",
+  },
+  {
+    resource:
+      "/D:/Folder Semester 5/Pemograman Mobile/modul3lab/Pemograman_Mobile_LAB_Kelompok/src/app/index.tsx",
+    owner: "typescript",
+    code: "7006",
+    severity: 8,
+    message: "Parameter 'error' implicitly has an 'any' type.",
+    source: "ts",
+    startLineNumber: 61,
+    startColumn: 17,
+    endLineNumber: 61,
+    endColumn: 22,
+    modelVersionId: 3,
+    origin: "extHost1",
+  },
+];
