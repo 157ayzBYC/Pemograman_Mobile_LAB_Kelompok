@@ -1,27 +1,37 @@
+
 import { createClient } from "@supabase/supabase-js";
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 import "react-native-url-polyfill/auto";
 
 const ExpoSecureStoreAdapter = {
-  getItem: (key: string) => {
-    if (Platform.OS === "web")
-      return Promise.resolve(localStorage.getItem(key));
+  getItem: async (key: string): Promise<string | null> => {
+    if (Platform.OS === "web") {
+      if (typeof localStorage === "undefined") return null;
+      return localStorage.getItem(key);
+    }
+
     return SecureStore.getItemAsync(key);
   },
-  setItem: (key: string, value: string) => {
+
+  setItem: async (key: string, value: string): Promise<void> => {
     if (Platform.OS === "web") {
+      if (typeof localStorage === "undefined") return;
       localStorage.setItem(key, value);
-      return Promise.resolve();
+      return;
     }
-    return SecureStore.setItemAsync(key, value);
+
+    await SecureStore.setItemAsync(key, value);
   },
-  removeItem: (key: string) => {
+
+  removeItem: async (key: string): Promise<void> => {
     if (Platform.OS === "web") {
+      if (typeof localStorage === "undefined") return;
       localStorage.removeItem(key);
-      return Promise.resolve();
+      return;
     }
-    return SecureStore.deleteItemAsync(key);
+
+    await SecureStore.deleteItemAsync(key);
   },
 };
 
