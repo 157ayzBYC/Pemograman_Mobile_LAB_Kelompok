@@ -1,14 +1,22 @@
 import { useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { supabase } from "../../lib/supabase";
+
+const normalizeEmail = (rawInput: string) => {
+  const cleaned = rawInput.trim().toLowerCase().replace(/\s+/g, "");
+  if (!cleaned.includes("@")) {
+    return `${cleaned}@studysuplay.com`;
+  }
+  return cleaned;
+};
 
 export default function LoginScreen() {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -19,11 +27,16 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
-    const cleanEmail = email.trim();
+    const validEmail = normalizeEmail(email);
     const cleanName = name.trim();
 
-    if (!cleanEmail || !password) {
-      Alert.alert("Validasi", "Email dan password wajib diisi.");
+    if (!email.trim() || !password) {
+      Alert.alert("Validasi", "Username atau email dan password wajib diisi.");
+      return;
+    }
+
+    if (password.length < 6) {
+      Alert.alert("Validasi", "Password minimal 6 karakter.");
       return;
     }
 
@@ -31,12 +44,12 @@ export default function LoginScreen() {
     try {
       if (isRegistering) {
         if (!cleanName) {
-          Alert.alert("Validasi", "Nama lengkap wajib diisi saat pendaftaran.");
+          Alert.alert("Validasi", "Nama lengkap wajib diisi.");
           setLoading(false);
           return;
         }
         const { error } = await supabase.auth.signUp({
-          email: cleanEmail,
+          email: validEmail,
           password,
           options: {
             data: {
@@ -46,10 +59,10 @@ export default function LoginScreen() {
           },
         });
         if (error) throw error;
-        Alert.alert("Berhasil", "Akun berhasil didaftarkan!");
+        Alert.alert("Berhasil", "Akun berhasil didaftarkan.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
-          email: cleanEmail,
+          email: validEmail,
           password,
         });
         if (error) throw error;
@@ -74,13 +87,13 @@ export default function LoginScreen() {
             <Text style={styles.label}>NAMA LENGKAP</Text>
             <TextInput
               style={styles.input}
-              placeholder="Contoh: Rifadz Maulana"
+              placeholder="Nama lengkap"
               placeholderTextColor="#64748b"
               value={name}
               onChangeText={setName}
             />
 
-            <Text style={styles.label}>PILIH PERAN (ROLE)</Text>
+            <Text style={styles.label}>PERAN</Text>
             <View style={styles.roleRow}>
               {(["client", "admin"] as const).map((item) => (
                 <TouchableOpacity
@@ -105,12 +118,11 @@ export default function LoginScreen() {
           </>
         )}
 
-        <Text style={styles.label}>EMAIL</Text>
+        <Text style={styles.label}>USERNAME ATAU EMAIL</Text>
         <TextInput
           style={styles.input}
-          placeholder="nama@email.com"
+          placeholder="Masukkan username atau email"
           placeholderTextColor="#64748b"
-          keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
           value={email}
@@ -123,6 +135,8 @@ export default function LoginScreen() {
           placeholder="Minimal 6 karakter"
           placeholderTextColor="#64748b"
           secureTextEntry
+          returnKeyType="done"
+          onSubmitEditing={handleAuth}
           value={password}
           onChangeText={setPassword}
         />
